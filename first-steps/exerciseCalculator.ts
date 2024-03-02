@@ -17,21 +17,18 @@ const calculateExercises = (hoursPerDay: number[], target: number) => {
   
   let rating: rating;
   let ratingDescription: string;
-  let success: boolean;
   const roundedAverage: number = Math.round(average);
+  let success: boolean = roundedAverage >= target;
   
   if (roundedAverage < target) {
     rating = 1;
     ratingDescription = 'You need to exercise more!';
-    success = false;
   } else if (roundedAverage == target) {
     rating = 2;
     ratingDescription = 'Not too bad but could do better';
-    success = true;
-  } else if (roundedAverage > target) {
+  } else {
     rating = 3;
     ratingDescription = 'Great effort!';
-    success = true;
   }
 
   return {
