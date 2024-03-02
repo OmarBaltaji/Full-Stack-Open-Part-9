@@ -1,6 +1,8 @@
+import { parseArguments, logErrorMessage } from "./utils";
+
 type rating  = 1 | 2 | 3;
 
-interface functionResult {
+interface exercisesResult {
   periodLength: number,
   trainingDays: number,
   success: boolean,
@@ -10,7 +12,7 @@ interface functionResult {
   average: number,
 };
 
-const calculateExercises = (hoursPerDay: number[], target: number) => {
+const calculateExercises = (hoursPerDay: number[], target: number): exercisesResult => {
   const periodLength: number = hoursPerDay.length;
   const trainingDays: number = hoursPerDay.filter((hours: number) => hours != 0).length;
   const average = hoursPerDay.reduce((a, b) => a + b, 0) / periodLength;
@@ -42,6 +44,11 @@ const calculateExercises = (hoursPerDay: number[], target: number) => {
   };
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
-console.log(calculateExercises([1, 0, 2, 1.5, 0, 3, 1], 2));
-console.log(calculateExercises([3, 1, 2, 4.5, 1, 3, 3], 2));
+try {
+  const values = parseArguments(process.argv);
+  const target = values[0];
+  const hoursPerDay = values.slice(1);
+  console.log(calculateExercises(hoursPerDay, target));
+} catch (error: unknown) {
+  logErrorMessage(error);
+}

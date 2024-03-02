@@ -1,7 +1,9 @@
+import { parseArguments, logErrorMessage } from "./utils";
 
 const calculateBmi = (height: number, weight: number): string => {
   const heightInMeters: number = height / 100;
   const bmi: number = weight / (heightInMeters**2);
+  console.log(bmi);
 
   switch (true) {
     case bmi < 16.0:
@@ -25,4 +27,21 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 }
 
-console.log(calculateBmi(180, 74));
+
+try {
+  const [value1, value2] = parseArguments(process.argv);
+  console.log(value1, value2)
+  let height: number;
+  let weight: number;
+  if (value1 > value2) {
+    height = value1;
+    weight = value2;
+  } else {
+    height = value2;
+    weight = value1;
+  }
+  
+  console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+  logErrorMessage(error);
+}
