@@ -52,3 +52,5 @@ try {
 } catch (error: unknown) {
   logErrorMessage(error);
 }
+
+export default calculateExercises;
