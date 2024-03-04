@@ -4,7 +4,11 @@ export interface Diagnoses {
   latin?: string;
 }
 
-export type Gender = 'male' | 'other' | 'female';
+export enum Gender {
+  Male = 'male',
+  Other = 'other',
+  Female = 'female'
+}
 
 type oneToNine = 1|2|3|4|5|6|7|8|9;
 type zeroToNine = 0|1|2|3|4|5|6|7|8|9;
