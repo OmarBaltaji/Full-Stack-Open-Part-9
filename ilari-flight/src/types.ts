@@ -1,4 +1,4 @@
-export interface Diary {
+export interface DiaryType {
   id: number,
   date: 'string',
   weather: Weather,
@@ -19,4 +19,8 @@ enum Visibility {
   Good = 'good',
   Ok = 'ok',
   Poor = 'poor',
+}
+
+export interface DiaryProps {
+  diary: DiaryType
 }
