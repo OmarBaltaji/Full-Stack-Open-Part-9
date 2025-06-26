@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { createNewDiary } from '../services/diaryService';
 import { type NewDiary, type DiaryFormProps, Visibility, Weather } from '../types';
+import axios from 'axios';
 
 const DiaryForm = ({ diaries, setDiaries }: DiaryFormProps) => {
   const initialDiary: NewDiary = {
@@ -11,13 +12,27 @@ const DiaryForm = ({ diaries, setDiaries }: DiaryFormProps) => {
   }
 
   const [newDiary, setNewDiary] = useState<NewDiary>(initialDiary);
+  const [notification, setNotification] = useState('');
 
   const addNewDiary = (event: React.SyntheticEvent) => {
     event.preventDefault();
 
-    createNewDiary(newDiary).then(data => setDiaries(diaries.concat(data)));
+    createNewDiary(newDiary)
+      .then(data => {
+        setDiaries(diaries.concat(data))
+        setNewDiary(initialDiary)
+      })
+      .catch(error => {
+        if (axios.isAxiosError(error)) {
+          setNotification(error?.response?.data)
+        } else {
+          setNotification('Some Unexpected Error Happened');
+        }
 
-    setNewDiary(initialDiary)
+        setTimeout(() => {
+          setNotification('');
+        }, 5000);
+      });
   }
 
   const onChangeHandler = (value: string, property: string) => {
@@ -26,6 +41,12 @@ const DiaryForm = ({ diaries, setDiaries }: DiaryFormProps) => {
 
   return (
     <div>
+      {notification && 
+        <div>
+          <span style={{ color: 'red' }}>{notification}</span>
+        </div>
+      }
+
       <h1>Add New Diary</h1>
       <form onSubmit={addNewDiary}>
         <div>
