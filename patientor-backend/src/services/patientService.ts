@@ -22,7 +22,13 @@ const addPatient = (patient: NewPatient): Patient => {
   return newPatient;
 };
 
+const getPatient = (id: string): Patient | null => {
+  const patient = patients.find(p => p.id === id);
+  return patient ? patient : null;
+};
+
 export default {
   getAll,
   addPatient,
+  getPatient
 };
