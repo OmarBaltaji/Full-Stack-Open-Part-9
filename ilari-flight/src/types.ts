@@ -1,12 +1,12 @@
 export interface DiaryType {
   id: number,
-  date: 'string',
+  date: string,
   weather: Weather,
   visibility: Visibility,
   comment: string,
 }
 
-enum Weather {
+export enum Weather {
   Sunny = 'sunny',
   Rainy = 'rainy',
   Cloudy = 'cloudy',
@@ -14,7 +14,7 @@ enum Weather {
   Stormy = 'stormy',
 }
 
-enum Visibility {
+export enum Visibility {
   Great = 'great',
   Good = 'good',
   Ok = 'ok',
@@ -24,3 +24,10 @@ enum Visibility {
 export interface DiaryProps {
   diary: DiaryType
 }
+
+export interface DiaryFormProps {
+  diaries: DiaryType[]
+  setDiaries: React.Dispatch<React.SetStateAction<DiaryType[]>>
+}
+
+export type NewDiary = Omit<DiaryType, 'id'>;
