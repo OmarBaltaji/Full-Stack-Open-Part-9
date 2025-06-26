@@ -60,17 +60,25 @@ const DiaryForm = ({ diaries, setDiaries }: DiaryFormProps) => {
         </div>
         <br />
         <div>
-          <label>Visibility: </label>
-          <select value={newDiary.visibility} onChange={({ target }) => onChangeHandler(target.value, 'visibility')}>
-            {Object.entries(Visibility).map(([ key, value ]) => <option key={key} value={value}>{key}</option>)}
-          </select>
+          <label>Visibility: </label>&nbsp;
+          {Object.entries(Visibility).map(([ key, value ]) => 
+            <span key={key}>
+              {key}
+              <input type='radio' name='visibility' value={value} checked={value === newDiary.visibility} onChange={({ target }) => onChangeHandler(target.value, 'visibility')} />
+              &emsp;
+            </span>
+          )}
         </div>
         <br />
         <div>
-          <label>Weather: </label>
-          <select value={newDiary.weather} onChange={({ target }) => onChangeHandler(target.value, 'weather')}>
-            {Object.entries(Weather).map(([ key, value ]) => <option key={key} value={value}>{key}</option>)}
-          </select>
+          <label>Weather: </label>&nbsp;
+            {Object.entries(Weather).map(([ key, value ]) => 
+            <span key={key}>
+              {key}
+              <input type='radio' name='weather' value={value} checked={value === newDiary.weather} onChange={({ target }) => onChangeHandler(target.value, 'weather')} />
+              &emsp;
+            </span>
+          )}
         </div>
         <br />
         <button type='submit'>Add</button>
