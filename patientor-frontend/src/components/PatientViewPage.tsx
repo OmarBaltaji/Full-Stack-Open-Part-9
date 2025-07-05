@@ -38,6 +38,17 @@ const PatientViewPage = () => {
           <label>Occupation:</label> &nbsp;
           <span>{patient.occupation}</span>
         </div>
+        <h3>Entries</h3>
+        {patient?.entries?.map(entry => 
+          <div key={entry.id}>
+            <div>{entry.date}, {entry.description}</div>
+            <ul>
+              {entry.diagnosisCodes.map(diagnoseCode => 
+                <li key={diagnoseCode}>{diagnoseCode}</li>)
+              }
+            </ul>
+          </div>
+        )}
       </div>
     );
   }
