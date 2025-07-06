@@ -32,11 +32,13 @@ interface BaseEntry {
 }
 
 interface HospitalEntry extends BaseEntry {
-  discharge: {
-    date: string,
-    criteria: string,
-  },
+  discharge: Discharge,
   type: "Hospital",
+}
+
+export interface Discharge {
+  date: string,
+  criteria: string,
 }
 
 interface OccupationalHealthcareEntry extends BaseEntry {
@@ -65,3 +67,7 @@ export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEnt
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
 
 export type EntryFormValues = UnionOmit<Entry, 'id'>; 
+
+export type EntryType = "HealthCheck" | "Hospital" | "OccupationalHealthcare";
+
+export type NewBaseEntry = Omit<BaseEntry, 'id'>;
