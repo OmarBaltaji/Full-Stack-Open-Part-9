@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
     if (error instanceof Error) {
       errorMessage += ' Error: ' + error.message;
     }
-    console.error(errorMessage);
+    res.status(422).send(errorMessage);
   }
 });
 
@@ -28,10 +28,17 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/:id/entries', (req, res) => {
-  const patientId: string = req.params.id;
-  const entry: NewEntry = toNewEntry(req.body);
-
-  res.send(patientService.addEntry(patientId, entry));
+  try {
+    const patientId: string = req.params.id;
+    const entry: NewEntry = toNewEntry(req.body);
+    res.json(patientService.addEntry(patientId, entry));
+  } catch (error: unknown) {
+    let errorMessage = 'Something went wrong.';
+    if (error instanceof Error) {
+      errorMessage += ' Error: ' + error.message;
+    }
+    res.status(422).send(errorMessage);
+  }
 });
 
 export default router;
