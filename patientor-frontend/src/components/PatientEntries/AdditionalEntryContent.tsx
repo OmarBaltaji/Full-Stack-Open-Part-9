@@ -2,6 +2,7 @@ import { CardContent, Typography } from "@mui/material";
 import { Entry } from "../../types";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import type { SvgIconProps } from "@mui/material";
+import { assertNever } from "../../utils";
 
 interface AdditionalEntryContentProps {
   entry: Entry,
@@ -52,7 +53,7 @@ const AdditionalEntryContent = ({ entry }: AdditionalEntryContentProps) => {
           </CardContent>
         );
       default:
-        return;
+        return assertNever(entry);
     }
   };
 

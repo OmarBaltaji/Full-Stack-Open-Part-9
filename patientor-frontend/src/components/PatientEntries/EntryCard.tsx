@@ -6,6 +6,7 @@ import AdditionalEntryContent from "./AdditionalEntryContent";
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import MedicalInformationIcon from '@mui/icons-material/MedicalInformation';
+import { assertNever } from "../../utils";
 
 interface EntryCardProps {
   entry: Entry,
@@ -24,6 +25,8 @@ const EntryCard = ({ entry, diagnosisCodes }: EntryCardProps) => {
         return <MedicalInformationIcon />;
       case "Hospital":
         return <LocalHospitalIcon />;
+      default:
+        return assertNever(entry);
     }
   };
 
