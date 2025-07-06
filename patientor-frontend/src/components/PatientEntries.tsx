@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Diagnosis, Entry } from "../types";
 import diagnosisCodesService from '../services/diagnosisCodes';
 import EntryCard from "./PatientEntries/EntryCard";
+import { Button } from "@mui/material";
 
 
 interface PatientEntriesProps {
@@ -22,6 +23,7 @@ const PatientEntries = ({ entries }: PatientEntriesProps) => {
         <div>
           {entries?.map(entry => <EntryCard key={entry.id} entry={entry} diagnosisCodes={diagnosisCodes} />)}
         </div>
+        <Button sx={{ mt: 2 }} variant="contained">ADD NEW ENTRY</Button>
       </div>
     );
   }
