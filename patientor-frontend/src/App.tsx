@@ -36,7 +36,7 @@ const App = () => {
           <Divider hidden />
           <Routes>
             <Route path="/" element={<PatientListPage patients={patients} setPatients={setPatients} />} />
-            <Route path="/patients/:id" element={<PatientViewPage patients={patients} />} />
+            <Route path="/patients/:id" element={<PatientViewPage />} />
           </Routes>
         </Container>
       </Router>

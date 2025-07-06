@@ -27,7 +27,7 @@ const PatientListPage = ({ patients, setPatients } : Props ) => {
     setError(undefined);
   };
 
-  const submitNewPatient = async (values: PatientFormValues) => {
+  const submitNewPatient = async (values: PatientFormValues): Promise<void> => {
     try {
       const patient = await patientService.create(values);
       setPatients(patients.concat(patient));
