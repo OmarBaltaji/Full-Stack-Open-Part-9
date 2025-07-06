@@ -17,6 +17,10 @@ const PatientViewPage = () => {
     }
   }, []);
 
+  if (!params.id) {
+    return <h1>No existing patient</h1>;
+  }
+
   const genderIcon = (): React.ReactElement<SvgIconProps, typeof SvgIcon> | undefined => {
     switch(patient?.gender) {
       case 'male':
@@ -40,7 +44,7 @@ const PatientViewPage = () => {
           <label>Occupation:</label> &nbsp;
           <span>{patient.occupation}</span>
         </div>
-        <PatientEntries entries={patient.entries} />
+        <PatientEntries entries={patient!.entries} setPatient={setPatient} />
       </div>
     );
   }

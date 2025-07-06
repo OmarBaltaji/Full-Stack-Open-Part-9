@@ -46,7 +46,7 @@ const EntryCard = ({ entry, diagnosisCodes }: EntryCardProps) => {
         <CardContent>
           <Typography>Diagnosis Codes:</Typography>
           <ul>
-            {entry.diagnosisCodes.map(diagnoseCode => 
+            {entry?.diagnosisCodes?.map(diagnoseCode => 
               <li key={diagnoseCode}>{diagnoseCode} {getDiagnosisDescription(diagnoseCode)}</li>)
             }
           </ul>
