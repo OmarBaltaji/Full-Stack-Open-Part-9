@@ -1,22 +1,23 @@
-import { TextField, Button, Grid, MenuItem, Select } from "@mui/material";
+import { TextField, Button, Grid, MenuItem, Select, InputLabel } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
-import { Discharge, EntryFormValues, EntryType, NewBaseEntry } from "../../types";
+import { Diagnosis, Discharge, EntryFormValues, EntryType, HealthCheckRating, NewBaseEntry } from "../../types";
 
 interface AddEntryFormProps {
   handleSubmit: (values: EntryFormValues) => Promise<void>;
   handleClose: () => void;
+  diagnosisCodes: Diagnosis[];
 }
 
-// interface HealthCheckRatingOption{
-//   value: HealthCheckRating;
-//   label: string;
-// }
+interface HealthCheckRatingOption{
+  value: HealthCheckRating;
+  label: string;
+}
 
-// const healthCheckRatingOptions: HealthCheckRatingOption[] = Object.values(HealthCheckRating)
-//   .filter((v) => typeof v === "number")
-//   .map((v) => ({ 
-//     value: v, label: HealthCheckRating[v as HealthCheckRating] 
-//   }));
+const healthCheckRatingOptions: HealthCheckRatingOption[] = Object.values(HealthCheckRating)
+  .filter((v) => typeof v === "number")
+  .map((v) => ({ 
+    value: v, label: HealthCheckRating[v as HealthCheckRating]
+  }));
 
 interface EntryTypeOptions {
   value: EntryType; 
@@ -29,12 +30,12 @@ const EntryTypeOptions: EntryTypeOptions[] = [
   { value: "Hospital", label: "Hospital" },
 ];
 
-const AddEntryForm = ({ handleSubmit, handleClose }: AddEntryFormProps) => {
+const AddEntryForm = ({ handleSubmit, handleClose, diagnosisCodes }: AddEntryFormProps) => {
   const [date, setDate] = useState('');
   const [specialist, setSpecialist] = useState('');
   const [description, setDescription] = useState('');
-  const [diagnosisCodes, setDiagnosisCodes] = useState('');
-  const [healthCheckRating, setHealthCheckRating] = useState<number>();
+  const [diagnosisCode, setDiagnosisCode] = useState([]);
+  const [healthCheckRating, setHealthCheckRating] = useState<number>(0);
   const [type, setType] = useState<EntryType>("HealthCheck");
   const [employerName, setEmployerName] = useState('');
   const [sickLeaveStartDate, setSickLeaveStartDate] = useState('');
@@ -51,7 +52,7 @@ const AddEntryForm = ({ handleSubmit, handleClose }: AddEntryFormProps) => {
       date,
       specialist,
       description,
-      diagnosisCodes: [diagnosisCodes],
+      diagnosisCodes: diagnosisCode,
     };
 
     let data: EntryFormValues;
@@ -96,14 +97,24 @@ const AddEntryForm = ({ handleSubmit, handleClose }: AddEntryFormProps) => {
     switch (type) { 
       case "HealthCheck":
         return (
-          <TextField 
-            margin="dense" 
-            label="Health Check Rating" 
-            type="number"
-            fullWidth 
-            value={healthCheckRating} 
-            onChange={({ target }) => setHealthCheckRating(Number(target.value))} 
-          />
+          <>
+            <InputLabel style={{ marginTop: 20 }}>Health Check Rating</InputLabel>
+            <Select
+              label="Health Check Rating"
+              fullWidth
+              value={healthCheckRating}
+              onChange={({ target }) => setHealthCheckRating(Number(target.value))}
+            >
+            {healthCheckRatingOptions.map(option =>
+              <MenuItem
+                key={option.label}
+                value={option.value}
+              >
+                {option.label}
+              </MenuItem>
+            )}
+            </Select>
+          </>
         );
       case "OccupationalHealthcare":
         return (
@@ -113,34 +124,18 @@ const AddEntryForm = ({ handleSubmit, handleClose }: AddEntryFormProps) => {
               label="Employer Name" 
               fullWidth 
               value={employerName} 
-              onChange={({ target }) => setEmployerName(target.value)} 
+              onChange={({ target }) => setEmployerName(target.value)}
+              sx={{ mb: 3 }}
             />
-            <TextField 
-              margin="dense" 
-              label="Sick Leave Start Date" 
-              fullWidth 
-              value={sickLeaveStartDate} 
-              onChange={({ target }) => setSickLeaveStartDate(target.value)} 
-            />
-            <TextField 
-              margin="dense" 
-              label="Sick Leave End Date" 
-              fullWidth 
-              value={sickLeaveEndDate} 
-              onChange={({ target }) => setSickLeaveEndDate(target.value)} 
-            />
+            <TextField margin="dense" label="Sick Leave Start Date" type="date" fullWidth value={sickLeaveStartDate} onChange={({ target }) => setSickLeaveStartDate(target.value)} />
+            <TextField margin="dense" label="Sick Leave End Date" type="date" fullWidth value={sickLeaveEndDate} onChange={({ target }) => setSickLeaveEndDate(target.value)} />
           </>
         );
       case "Hospital":
         return (
           <>
-            <TextField 
-              margin="dense" 
-              label="Discharge Date" 
-              fullWidth 
-              value={discharge.date} 
-              onChange={({ target }) => setDischarge((oldDischarge) => ({ ...oldDischarge, date: target.value }))} 
-            />
+            <TextField label="Discharge Date" type="date" fullWidth value={discharge.date} onChange={({ target }) => setDischarge((oldDischarge) => ({ ...oldDischarge, date: target.value }))} />
+
             <TextField
               margin="dense" 
               label="Discharge Criteria"
@@ -155,7 +150,7 @@ const AddEntryForm = ({ handleSubmit, handleClose }: AddEntryFormProps) => {
 
   return (
     <form onSubmit={addEntry}>
-      <Select value={type} onChange={({ target }) => setType(target.value as EntryType)} fullWidth>
+      <Select sx={{ mb: 2 }} value={type} onChange={({ target }) => setType(target.value as EntryType)} fullWidth>
         {EntryTypeOptions.map(option => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}
@@ -163,13 +158,8 @@ const AddEntryForm = ({ handleSubmit, handleClose }: AddEntryFormProps) => {
         ))}
       </Select>
 
-      <TextField 
-        margin="dense" 
-        label="Date" 
-        fullWidth 
-        value={date} 
-        onChange={({ target }) => setDate(target.value)} 
-      />
+      <TextField margin="dense" label="Date" type="date" fullWidth value={date} onChange={({ target }) => setDate(target.value)} />
+
       <TextField 
         margin="dense" 
         label="Specialist" 
@@ -184,32 +174,23 @@ const AddEntryForm = ({ handleSubmit, handleClose }: AddEntryFormProps) => {
         value={description} 
         onChange={({ target }) => setDescription(target.value)} 
       />
-      <TextField 
-        margin="dense" 
-        label="Diagnosis Codes" 
-        fullWidth 
-        value={diagnosisCodes} 
-        onChange={({ target }) => setDiagnosisCodes(target.value)} 
-      />
+
+      <InputLabel style={{ marginTop: 20 }}>Diagnosis Code</InputLabel>
+      <Select
+        label="Diagnosis Code"
+        fullWidth
+        multiple
+        value={diagnosisCode}
+        onChange={({ target }) => setDiagnosisCode(target.value)}
+      >
+        {diagnosisCodes.map(diagnosis => (
+          <MenuItem key={diagnosis.code} value={diagnosis.code}>
+            {diagnosis.code} - {diagnosis.name}
+          </MenuItem>
+        ))} 
+      </Select>
    
       {additionalFields()}
-
-      {/* <InputLabel style={{ marginTop: 20 }}>Health Check Rating</InputLabel>
-      <Select
-        label="Health Check Rating"
-        fullWidth
-        value={healthCheckRating}
-        onChange={({ target }) => setHealthCheckRating(target.value)}
-      >
-      {healthCheckRatingOptions.map(option =>
-        <MenuItem
-          key={option.label}
-          value={option.value}
-        >
-          {option.label}
-        </MenuItem>
-      )}
-      </Select> */}
       
       <Grid sx={{ justifyContent: 'space-between', display: 'flex' }}>
         <Button sx={{ my: 3 }} variant="contained" color="secondary" onClick={handleClose}>Cancel</Button>

@@ -21,7 +21,7 @@ const PatientEntries = ({ entries, setPatient }: PatientEntriesProps) => {
   if (entries) {
     return (
       <div>
-        <AddEntryModal open={openModal} setOpen={setOpenModal} setPatient={setPatient} />
+        <AddEntryModal open={openModal} setOpen={setOpenModal} setPatient={setPatient} diagnosisCodes={diagnosisCodes} />
         <h3>Entries</h3>
         <div>
           {entries?.map(entry => <EntryCard key={entry.id} entry={entry} diagnosisCodes={diagnosisCodes} />)}

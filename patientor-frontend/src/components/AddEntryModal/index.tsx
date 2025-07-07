@@ -1,5 +1,5 @@
 import { Dialog, DialogTitle, DialogContent, Divider, Alert } from "@mui/material";
-import { EntryFormValues, Patient } from "../../types";
+import { Diagnosis, EntryFormValues, Patient } from "../../types";
 import AddEntryForm from "./AddEntryForm";
 import React from "react";
 import { handleError } from "../../utils";
@@ -10,9 +10,10 @@ interface EntryModalProps {
   open: boolean,
   setOpen: React.Dispatch<React.SetStateAction<boolean>>,
   setPatient: React.Dispatch<React.SetStateAction<Patient | undefined>>
+  diagnosisCodes: Diagnosis[],
 }
 
-const EntryModal = ({ open, setOpen, setPatient }: EntryModalProps) => {
+const EntryModal = ({ open, setOpen, setPatient, diagnosisCodes }: EntryModalProps) => {
   const handleClose = (): void => {
     setOpen(false);
     setError(undefined);
@@ -44,7 +45,7 @@ const EntryModal = ({ open, setOpen, setPatient }: EntryModalProps) => {
         <DialogTitle>Add Entry</DialogTitle>
         <Divider />
         <DialogContent>
-          <AddEntryForm handleSubmit={handleSubmit} handleClose={handleClose} />
+          <AddEntryForm handleSubmit={handleSubmit} handleClose={handleClose} diagnosisCodes={diagnosisCodes} />
         </DialogContent>
       </Dialog>
   );
